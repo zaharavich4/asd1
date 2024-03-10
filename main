@@ -1,0 +1,76 @@
+#include <iostream>
+#include <cstdlib> // для функції rand()
+#include <ctime>   // для функції time()
+
+const int ROWS = 5;
+const int COLS = 7;
+
+void printArray(int arr[ROWS][COLS]) {
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void randomFillArray(int arr[ROWS][COLS]) {
+    // Ініціалізація генератора випадкових чисел
+    std::srand(std::time(0));
+
+    // Заповнення масиву випадковими числами
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            arr[i][j] = std::rand() % 100; // Генеруємо випадкове число в діапазоні [0, 99]
+        }
+    }
+}
+
+void sortRow(int arr[ROWS][COLS], int row) {
+    // Сортування відповідного рядка за зростанням
+    for (int i = 0; i < COLS - 1; ++i) {
+        for (int j = 0; j < COLS - i - 1; ++j) {
+            if (arr[row][j] > arr[row][j + 1]) {
+                // Обмін елементів, якщо вони не відсортовані
+                std::swap(arr[row][j], arr[row][j + 1]);
+            }
+        }
+    }
+}
+
+void sortColumn(int arr[ROWS][COLS], int col) {
+    // Сортування відповідного стовпця за зростанням
+    for (int i = 0; i < ROWS - 1; ++i) {
+        for (int j = 0; j < ROWS - i - 1; ++j) {
+            if (arr[j][col] > arr[j + 1][col]) {
+                // Обмін елементів, якщо вони не відсортовані
+                std::swap(arr[j][col], arr[j + 1][col]);
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[ROWS][COLS];
+
+    // Заповнення та виведення вихідного масиву
+    std::cout << "Original Array:\n";
+    randomFillArray(arr);
+    printArray(arr);
+
+    // Вибір випадкового рядка або стовпця для сортування
+    int randomIndex = std::rand() % ROWS; // можна використовувати COLS для вибору стовпця
+    std::cout << "\nSorting ";
+    if (std::rand() % 2 == 0) {
+        std::cout << "row " << randomIndex << ":\n";
+        sortRow(arr, randomIndex);
+    } else {
+        std::cout << "column " << randomIndex << ":\n";
+        sortColumn(arr, randomIndex);
+    }
+
+    // Виведення відсортованого масиву
+    printArray(arr);
+
+    return 0;
+}
